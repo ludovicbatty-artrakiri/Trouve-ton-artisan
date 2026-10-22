@@ -2,6 +2,7 @@
  * Configuration de l'application Express.
  * L'ordre des middlewares compte : sécurité d'abord, routes ensuite, erreurs à la fin.
  */
+const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -45,6 +46,23 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 // Toutes les routes métier : limitées en débit et protégées par la clé d'API
 app.use('/api', globalLimiter, requireApiKey, routes);
+
+// -----------------------------------------------------------------------------
+// Hébergement « tout-en-un » (ex. alwaysdata) : si FRONTEND_DIST est défini,
+// l'API sert aussi le site React compilé (frontend/dist) sur le même domaine.
+// -----------------------------------------------------------------------------
+if (config.frontendDist) {
+  // Fichiers statiques (JS, CSS, images) ; mis en cache 7 jours sauf index.html
+  app.use(express.static(config.frontendDist, { index: false, maxAge: '7d' }));
+
+  // Toute autre URL (hors /api) renvoie index.html : React Router affiche
+  // la bonne page… ou la page 404.
+  app.use((req, res, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api')) return next();
+    res.set('Cache-Control', 'no-cache');
+    return res.sendFile(path.join(config.frontendDist, 'index.html'));
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);

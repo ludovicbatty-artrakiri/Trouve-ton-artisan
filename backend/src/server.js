@@ -9,8 +9,9 @@ async function start() {
   try {
     await sequelize.authenticate();
     console.log('Connexion à la base de données établie.');
-    app.listen(config.port, () => {
-      console.log(`API Trouve ton artisan démarrée sur le port ${config.port} (${config.env}).`);
+    app.listen(config.port, config.host, () => {
+      console.log(`API Trouve ton artisan démarrée sur ${config.host || '*'}:${config.port} (${config.env}).`);
+      if (config.frontendDist) console.log(`Site React servi depuis ${config.frontendDist}`);
     });
   } catch (error) {
     console.error('Impossible de se connecter à la base de données :', error.message);

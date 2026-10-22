@@ -6,6 +6,9 @@ Plateforme de la **Région Auvergne-Rhône-Alpes** permettant aux particuliers d
 - **API** : Node.js, Express 5, Sequelize 6
 - **Base de données** : MySQL 8 / MariaDB 10.6+
 
+🔗 **Site en ligne** : _https://COMPTE.alwaysdata.net (à compléter)_
+🎨 **Maquettes Figma** : _à compléter_
+
 ---
 
 ## Sommaire
@@ -35,7 +38,8 @@ Plateforme de la **Région Auvergne-Rhône-Alpes** permettant aux particuliers d
 trouve-ton-artisan/
 ├── database/
 │   ├── 01_create_database.sql   # création de la base, des tables et du compte en lecture seule
-│   └── 02_seed_database.sql     # alimentation avec le jeu d'essai fourni (17 artisans)
+│   ├── 02_seed_database.sql     # alimentation avec le jeu d'essai fourni (17 artisans)
+│   └── hebergement/             # mêmes scripts sans CREATE DATABASE/USER (hébergement mutualisé)
 ├── backend/                     # API REST (Express + Sequelize)
 │   ├── .env.example
 │   └── src/
@@ -68,6 +72,8 @@ cd trouve-ton-artisan
 ```
 
 ### 2. Créer et alimenter la base de données
+
+> Avant d'exécuter le premier script, **remplacez le mot de passe** du compte `tta_api` à la fin de `database/01_create_database.sql`.
 
 ```bash
 mysql -u root -p < database/01_create_database.sql
@@ -165,12 +171,18 @@ Résumé des mesures (détaillées dans le dossier PDF) :
 
 ## Déploiement
 
-Exemple avec un hébergeur proposant Node.js + MySQL (alwaysdata, o2switch…) :
+Le site est hébergé sur **alwaysdata** : le serveur Node.js sert à la fois l'API (`/api`) et le site
+React compilé, sur une seule adresse. Guide complet pas à pas : **[DEPLOIEMENT_ALWAYSDATA.md](DEPLOIEMENT_ALWAYSDATA.md)**.
 
-1. Créer la base MySQL et exécuter les deux scripts SQL ;
-2. Déployer `backend/` comme application Node.js (`npm install --omit=dev`, commande `npm start`), et renseigner les variables d'environnement (`NODE_ENV=production`, `CORS_ORIGIN=https://votre-domaine`) ;
-3. Construire le frontend avec les bonnes variables (`VITE_API_URL=https://api.votre-domaine/api`) puis déposer le contenu de `frontend/dist/` sur l'hébergement statique. Le fichier `.htaccess` (Apache) ou `_redirects` (Netlify) renvoie toutes les URL vers `index.html` afin que React Router gère les pages et la 404 ;
-4. Activer HTTPS (Let's Encrypt).
+En résumé :
+
+1. Créer la base et un utilisateur **en lecture seule** dans le panneau alwaysdata, puis importer
+   `database/hebergement/01_create_tables.sql` et `database/hebergement/02_seed_data.sql` (phpMyAdmin) ;
+2. `backend/` : `npm ci --omit=dev`, puis `.env` à partir de `.env.alwaysdata.example`
+   (`FRONTEND_DIST` = chemin absolu de `frontend/dist`) ;
+3. `frontend/` : `.env` avec `VITE_API_URL=/api`, puis `npm ci && npm run build` ;
+4. Site de type **Node.js** : commande `node /home/COMPTE/trouve-ton-artisan/backend/src/server.js`,
+   répertoire de travail `backend/`. L'API écoute automatiquement l'`IP` et le `PORT` fournis par l'hébergeur.
 
 ---
 

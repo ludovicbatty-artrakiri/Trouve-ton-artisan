@@ -23,6 +23,12 @@ module.exports = {
   env: process.env.NODE_ENV || 'development',
   isProd: process.env.NODE_ENV === 'production',
   port: Number(process.env.PORT) || 3001,
+  // Adresse d'écoute : alwaysdata impose l'IP fournie dans la variable IP
+  host: process.env.IP || undefined,
+  // Dossier du frontend compilé à servir (optionnel, hébergement tout-en-un)
+  frontendDist: process.env.FRONTEND_DIST
+    ? require('path').resolve(process.env.FRONTEND_DIST)
+    : null,
   db: {
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT) || 3306,
