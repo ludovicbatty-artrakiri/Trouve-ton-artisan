@@ -6,9 +6,6 @@ Plateforme de la **Région Auvergne-Rhône-Alpes** permettant aux particuliers d
 - **API** : Node.js, Express 5, Sequelize 6
 - **Base de données** : MySQL 8 / MariaDB 10.6+
 
-🔗 **Site en ligne** : _à compléter_
-🎨 **Maquettes Figma** : _à compléter_
-
 ---
 
 ## Sommaire
@@ -71,8 +68,6 @@ cd trouve-ton-artisan
 ```
 
 ### 2. Créer et alimenter la base de données
-
-> Avant d'exécuter le premier script, **remplacez le mot de passe** du compte `tta_api` à la fin de `database/01_create_database.sql`.
 
 ```bash
 mysql -u root -p < database/01_create_database.sql
