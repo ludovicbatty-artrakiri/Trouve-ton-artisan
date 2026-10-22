@@ -1,0 +1,25 @@
+{
+  "name": "trouve-ton-artisan-front",
+  "version": "1.0.0",
+  "description": "Interface React de la plateforme Trouve ton artisan",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "bootstrap": "5.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "sass": "^1.105.2",
+    "vite": "^8.3.4"
+  },
+  "private": true,
+  "type": "module"
+}

@@ -1,0 +1,2 @@
+# Netlify : toutes les URL sont servies par index.html (React Router gère la 404)
+/*    /index.html   200

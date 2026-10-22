@@ -1,0 +1,324 @@
+// =============================================================================
+//  Feuille de styles principale — approche MOBILE FIRST :
+//  les styles de base visent le mobile, les media-breakpoint-up() enrichissent
+//  la mise en page pour la tablette (md) puis l'ordinateur (lg, xl).
+// =============================================================================
+
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+
+// -----------------------------------------------------------------------------
+// Base & accessibilité
+// -----------------------------------------------------------------------------
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  // Respect du réglage système « réduire les animations » (WCAG 2.3.3)
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+// Focus toujours visible pour la navigation au clavier (WCAG 2.4.7)
+:focus-visible {
+  outline: 3px solid $tta-blue-dark;
+  outline-offset: 2px;
+}
+
+.site-main {
+  flex: 1;
+  &:focus { outline: none; } // le focus programmatique ne doit pas afficher de cadre
+}
+
+// Lien d'évitement : invisible jusqu'à ce qu'il reçoive le focus
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 2000;
+  padding: .75rem 1rem;
+  background: $tta-blue-dark;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0 0 $border-radius $border-radius;
+  &:focus { top: 0; color: #fff; }
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  &::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin-top: .5rem;
+    background: $tta-red;
+    border-radius: 2px;
+  }
+  @include media-breakpoint-up(md) { font-size: 1.85rem; }
+}
+
+.page { padding-block: 2rem 3rem; }
+.page__title {
+  font-size: 1.75rem;
+  @include media-breakpoint-up(md) { font-size: 2.25rem; }
+}
+
+// -----------------------------------------------------------------------------
+// Header
+// -----------------------------------------------------------------------------
+.site-header {
+  background: #fff;
+  border-bottom: 4px solid $tta-blue;
+  box-shadow: 0 2px 8px rgba($tta-text, .08);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+
+  .navbar { padding-block: .75rem; }
+  .navbar-collapse { padding-block: .5rem; }
+
+  .nav-link {
+    color: $tta-text;
+    font-weight: 500;
+    padding: .75rem 0;     // grande zone cliquable sur mobile (≥ 44 px)
+    border-bottom: 1px solid $tta-bg-light;
+
+    &:hover { color: $tta-blue; }
+    &.active {
+      color: $tta-blue-dark;
+      font-weight: 700;
+      box-shadow: inset 4px 0 0 $tta-red;
+      padding-left: .75rem;
+    }
+  }
+
+  .search-bar { margin-top: .75rem; }
+
+  @include media-breakpoint-up(lg) {
+    .navbar-collapse { padding-block: 0; }
+    .nav-link {
+      padding: .5rem 1rem !important;
+      border-bottom: 0;
+      &.active { box-shadow: inset 0 -3px 0 $tta-red; padding-left: 1rem; }
+    }
+    .search-bar { margin-top: 0; width: 280px; }
+  }
+}
+
+.site-header__logo {
+  width: 180px;
+  height: auto;
+  @include media-breakpoint-up(md) { width: 240px; }
+}
+
+// -----------------------------------------------------------------------------
+// Footer
+// -----------------------------------------------------------------------------
+.site-footer {
+  background: $tta-blue-dark;
+  color: #fff;
+  padding-block: 2.5rem 1.5rem;
+  margin-top: auto;
+
+  a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  a:hover { color: $tta-bg-light; text-decoration-thickness: 2px; }
+  li + li { margin-top: .5rem; }
+  address { font-style: normal; line-height: 1.7; }
+}
+
+.site-footer__title {
+  color: #fff;
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+}
+
+.site-footer__copy {
+  margin: 2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(#fff, .25);
+  font-size: .875rem;
+}
+
+// -----------------------------------------------------------------------------
+// Accueil
+// -----------------------------------------------------------------------------
+.hero {
+  background: linear-gradient(135deg, $tta-bg-light 0%, #fff 70%);
+  padding-block: 2.5rem;
+  border-bottom: 1px solid darken($tta-bg-light, 4%);
+
+  @include media-breakpoint-up(lg) { padding-block: 4rem; }
+}
+
+.hero__title {
+  font-size: 1.85rem;
+  max-width: 22ch;
+  @include media-breakpoint-up(md) { font-size: 2.5rem; }
+  @include media-breakpoint-up(lg) { font-size: 3rem; }
+}
+
+.hero__lead {
+  font-size: 1.1rem;
+  max-width: 60ch;
+  margin-bottom: 0;
+}
+
+.steps { padding-block: 2.5rem; }
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid darken($tta-bg-light, 6%);
+  border-left: 6px solid $tta-green;
+  border-radius: $border-radius-lg;
+
+  @include media-breakpoint-up(xl) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.step__number {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: $tta-blue-dark;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.step__text { font-weight: 500; }
+
+.top-artisans {
+  background: $tta-bg-light;
+  padding-block: 2.5rem 3rem;
+}
+
+// -----------------------------------------------------------------------------
+// Carte artisan
+// -----------------------------------------------------------------------------
+.artisan-card {
+  border: 1px solid darken($tta-bg-light, 6%);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:hover,
+  &:focus-within {
+    transform: translateY(-3px);
+    box-shadow: 0 .75rem 1.5rem rgba($tta-text, .12);
+  }
+
+  // Le contour de focus s'affiche sur toute la carte
+  &:focus-within { outline: 3px solid $tta-blue-dark; outline-offset: 2px; }
+  .stretched-link:focus-visible { outline: none; }
+}
+
+.artisan-card__img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;  // l'illustration est affichée entière, sans être rognée
+  background: $tta-bg-light;
+}
+
+.artisan-card__name a {
+  color: $tta-blue-dark;
+  text-decoration: none;
+}
+
+.artisan-card__meta,
+.artisan-detail__meta {
+  display: grid;
+  gap: .25rem;
+  margin: 0;
+
+  div { display: flex; gap: .4rem; }
+  dt { font-weight: 500; &::after { content: ' :'; } }
+  dd { margin: 0; }
+}
+
+// -----------------------------------------------------------------------------
+// Étoiles
+// -----------------------------------------------------------------------------
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.star-rating__stars {
+  display: inline-flex;
+  color: #b8860b; // or foncé : contraste ≥ 3:1 pour les éléments graphiques (WCAG 1.4.11)
+}
+.star-rating__value { font-weight: 700; }
+
+// -----------------------------------------------------------------------------
+// Fiche artisan
+// -----------------------------------------------------------------------------
+.artisan-detail__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.artisan-detail__img {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: $border-radius-lg;
+  border: 1px solid darken($tta-bg-light, 6%);
+}
+
+.artisan-detail__meta { margin-top: .75rem; }
+
+.contact-card {
+  background: $tta-bg-light;
+  border-top: 6px solid $tta-blue;
+  border-radius: $border-radius-lg;
+  padding: 1.5rem;
+
+  @include media-breakpoint-up(lg) {
+    position: sticky;
+    top: 7rem;
+    padding: 2rem;
+  }
+}
+
+// Pot de miel : retiré de l'écran (pas display:none, certains robots le détectent)
+.hp-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+// -----------------------------------------------------------------------------
+// 404
+// -----------------------------------------------------------------------------
+.not-found__img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+}

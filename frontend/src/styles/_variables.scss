@@ -1,0 +1,39 @@
+// =============================================================================
+//  Charte graphique « Trouve ton artisan ! » (brief §4.4)
+//  Ces variables surchargent celles de Bootstrap AVANT son import.
+// =============================================================================
+
+// --- Palette fournie par la Région
+$tta-bg-light: #f1f8fc;   // fond clair
+$tta-blue: #0074c7;       // bleu principal (contraste 4,9:1 sur blanc → AA)
+$tta-blue-dark: #00497c;  // bleu foncé (titres, survols)
+$tta-text: #384050;       // gris anthracite (texte courant)
+$tta-red: #cd2c2e;        // rouge (erreurs, accents)
+$tta-green: #82b864;      // vert (décoratif uniquement : contraste insuffisant pour du texte)
+
+// --- Surcharge des variables Bootstrap
+$primary: $tta-blue;
+$secondary: $tta-blue-dark;
+$danger: $tta-red;
+$success: #3d7a22;        // vert assombri pour garantir un contraste AA sur fond clair
+$light: $tta-bg-light;
+$dark: $tta-text;
+
+$body-color: $tta-text;
+$body-bg: #fff;
+$link-color: $tta-blue;
+$link-hover-color: $tta-blue-dark;
+$headings-color: $tta-blue-dark;
+$headings-font-weight: 700;
+
+// Police de la Région « Graphik » si installée, sinon Inter (très proche, open source)
+$font-family-sans-serif: 'Graphik', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+$font-size-base: 1rem; // 16 px : taille confortable, agrandissable par l'utilisateur (rem)
+
+$border-radius: .5rem;
+$border-radius-lg: .75rem;
+
+$focus-ring-color: rgba($tta-blue, .5);
+$focus-ring-width: .25rem;
+
+$breadcrumb-divider: quote('›');
